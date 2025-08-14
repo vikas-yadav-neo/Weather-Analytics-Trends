@@ -1,0 +1,177 @@
+[2025-08-13T12:53:27.993+0000] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=non-requeueable deps ti=<TaskInstance: weather_main_script_runner.run_main_py manual__2025-08-13T12:53:25.616177+00:00 [queued]>
+[2025-08-13T12:53:28.004+0000] {taskinstance.py:1957} INFO - Dependencies all met for dep_context=requeueable deps ti=<TaskInstance: weather_main_script_runner.run_main_py manual__2025-08-13T12:53:25.616177+00:00 [queued]>
+[2025-08-13T12:53:28.004+0000] {taskinstance.py:2171} INFO - Starting attempt 1 of 2
+[2025-08-13T12:53:28.022+0000] {taskinstance.py:2192} INFO - Executing <Task(PythonOperator): run_main_py> on 2025-08-13 12:53:25.616177+00:00
+[2025-08-13T12:53:28.027+0000] {standard_task_runner.py:60} INFO - Started process 512 to run task
+[2025-08-13T12:53:28.031+0000] {standard_task_runner.py:87} INFO - Running: ['airflow', 'tasks', 'run', 'weather_main_script_runner', 'run_main_py', 'manual__2025-08-13T12:53:25.616177+00:00', '--job-id', '26', '--raw', '--subdir', 'DAGS_FOLDER/weather_batch_dag.py', '--cfg-path', '/tmp/tmpiyf_166f']
+[2025-08-13T12:53:28.033+0000] {standard_task_runner.py:88} INFO - Job 26: Subtask run_main_py
+[2025-08-13T12:53:28.115+0000] {task_command.py:423} INFO - Running <TaskInstance: weather_main_script_runner.run_main_py manual__2025-08-13T12:53:25.616177+00:00 [running]> on host 90bb70252fc8
+[2025-08-13T12:53:28.247+0000] {taskinstance.py:2481} INFO - Exporting env vars: AIRFLOW_CTX_DAG_OWNER='airflow' AIRFLOW_CTX_DAG_ID='weather_main_script_runner' AIRFLOW_CTX_TASK_ID='run_main_py' AIRFLOW_CTX_EXECUTION_DATE='2025-08-13T12:53:25.616177+00:00' AIRFLOW_CTX_TRY_NUMBER='1' AIRFLOW_CTX_DAG_RUN_ID='manual__2025-08-13T12:53:25.616177+00:00'
+[2025-08-13T12:53:28.248+0000] {logging_mixin.py:188} INFO - 🚀 Running Python script: /opt/infra/pyspark_jobs/main.py
+[2025-08-13T12:53:38.096+0000] {logging_mixin.py:188} INFO - 📄 STDOUT:
+[2025-08-13T12:53:38.097+0000] {logging_mixin.py:188} INFO -  
+[2025-08-13T12:53:38.098+0000] {logging_mixin.py:188} INFO - ⚠️ STDERR:
+[2025-08-13T12:53:38.098+0000] {logging_mixin.py:188} INFO -  25/08/13 12:53:33 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+25/08/13 12:53:33 WARN DependencyUtils: Local jar /home/neosoft/Desktop/wheather_analytics_trends/infra/pyspark_apps/jars/mysql-connector-j-8.3.0.jar does not exist, skipping.
+25/08/13 12:53:33 WARN DependencyUtils: Local jar /home/neosoft/Desktop/wheather_analytics_trends/infra/pyspark_apps/jars/postgresql-42.7.3.jar does not exist, skipping.
+25/08/13 12:53:33 INFO SparkContext: Running Spark version 3.5.6
+25/08/13 12:53:33 INFO SparkContext: OS info Linux, 5.15.0-139-generic, amd64
+25/08/13 12:53:33 INFO SparkContext: Java version 17.0.15
+25/08/13 12:53:33 INFO ResourceUtils: ==============================================================
+25/08/13 12:53:33 INFO ResourceUtils: No custom resources configured for spark.driver.
+25/08/13 12:53:33 INFO ResourceUtils: ==============================================================
+25/08/13 12:53:33 INFO SparkContext: Submitted application: WeatherProcessing
+25/08/13 12:53:33 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+25/08/13 12:53:33 INFO ResourceProfile: Limiting resource is cpu
+25/08/13 12:53:33 INFO ResourceProfileManager: Added ResourceProfile id: 0
+25/08/13 12:53:33 INFO SecurityManager: Changing view acls to: airflow
+25/08/13 12:53:33 INFO SecurityManager: Changing modify acls to: airflow
+25/08/13 12:53:33 INFO SecurityManager: Changing view acls groups to: 
+25/08/13 12:53:33 INFO SecurityManager: Changing modify acls groups to: 
+25/08/13 12:53:33 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: airflow; groups with view permissions: EMPTY; users with modify permissions: airflow; groups with modify permissions: EMPTY
+25/08/13 12:53:34 INFO Utils: Successfully started service 'sparkDriver' on port 44269.
+25/08/13 12:53:34 INFO SparkEnv: Registering MapOutputTracker
+25/08/13 12:53:34 INFO SparkEnv: Registering BlockManagerMaster
+25/08/13 12:53:34 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+25/08/13 12:53:34 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+25/08/13 12:53:34 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+25/08/13 12:53:34 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-c5a6bd01-c3a9-4807-9ccb-388eac1c4bdb
+25/08/13 12:53:34 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+25/08/13 12:53:34 INFO SparkEnv: Registering OutputCommitCoordinator
+25/08/13 12:53:34 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+25/08/13 12:53:34 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+25/08/13 12:53:34 ERROR SparkContext: Failed to add /home/neosoft/Desktop/wheather_analytics_trends/infra/pyspark_apps/jars/mysql-connector-j-8.3.0.jar to Spark environment
+java.io.FileNotFoundException: Jar /home/neosoft/Desktop/wheather_analytics_trends/infra/pyspark_apps/jars/mysql-connector-j-8.3.0.jar not found
+	at org.apache.spark.SparkContext.addLocalJarFile$1(SparkContext.scala:2095)
+	at org.apache.spark.SparkContext.addJar(SparkContext.scala:2151)
+	at org.apache.spark.SparkContext.$anonfun$new$15(SparkContext.scala:521)
+	at org.apache.spark.SparkContext.$anonfun$new$15$adapted(SparkContext.scala:521)
+	at scala.collection.mutable.ResizableArray.foreach(ResizableArray.scala:62)
+	at scala.collection.mutable.ResizableArray.foreach$(ResizableArray.scala:55)
+	at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:49)
+	at org.apache.spark.SparkContext.<init>(SparkContext.scala:521)
+	at org.apache.spark.api.java.JavaSparkContext.<init>(JavaSparkContext.scala:58)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:481)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:247)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:374)
+	at py4j.Gateway.invoke(Gateway.java:238)
+	at py4j.commands.ConstructorCommand.invokeConstructor(ConstructorCommand.java:80)
+	at py4j.commands.ConstructorCommand.execute(ConstructorCommand.java:69)
+	at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:182)
+	at py4j.ClientServerConnection.run(ClientServerConnection.java:106)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+25/08/13 12:53:34 ERROR SparkContext: Failed to add /home/neosoft/Desktop/wheather_analytics_trends/infra/pyspark_apps/jars/postgresql-42.7.3.jar to Spark environment
+java.io.FileNotFoundException: Jar /home/neosoft/Desktop/wheather_analytics_trends/infra/pyspark_apps/jars/postgresql-42.7.3.jar not found
+	at org.apache.spark.SparkContext.addLocalJarFile$1(SparkContext.scala:2095)
+	at org.apache.spark.SparkContext.addJar(SparkContext.scala:2151)
+	at org.apache.spark.SparkContext.$anonfun$new$15(SparkContext.scala:521)
+	at org.apache.spark.SparkContext.$anonfun$new$15$adapted(SparkContext.scala:521)
+	at scala.collection.mutable.ResizableArray.foreach(ResizableArray.scala:62)
+	at scala.collection.mutable.ResizableArray.foreach$(ResizableArray.scala:55)
+	at scala.collection.mutable.ArrayBuffer.foreach(ArrayBuffer.scala:49)
+	at org.apache.spark.SparkContext.<init>(SparkContext.scala:521)
+	at org.apache.spark.api.java.JavaSparkContext.<init>(JavaSparkContext.scala:58)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:481)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:247)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:374)
+	at py4j.Gateway.invoke(Gateway.java:238)
+	at py4j.commands.ConstructorCommand.invokeConstructor(ConstructorCommand.java:80)
+	at py4j.commands.ConstructorCommand.execute(ConstructorCommand.java:69)
+	at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:182)
+	at py4j.ClientServerConnection.run(ClientServerConnection.java:106)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+25/08/13 12:53:35 INFO Executor: Starting executor ID driver on host 90bb70252fc8
+25/08/13 12:53:35 INFO Executor: OS info Linux, 5.15.0-139-generic, amd64
+25/08/13 12:53:35 INFO Executor: Java version 17.0.15
+25/08/13 12:53:35 INFO Executor: Starting executor with user classpath (userClassPathFirst = false): ''
+25/08/13 12:53:35 INFO Executor: Created or updated repl class loader org.apache.spark.util.MutableURLClassLoader@1900f9bb for default.
+25/08/13 12:53:35 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 46209.
+25/08/13 12:53:35 INFO NettyBlockTransferService: Server created on 90bb70252fc8:46209
+25/08/13 12:53:35 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+25/08/13 12:53:35 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 90bb70252fc8, 46209, None)
+25/08/13 12:53:35 INFO BlockManagerMasterEndpoint: Registering block manager 90bb70252fc8:46209 with 434.4 MiB RAM, BlockManagerId(driver, 90bb70252fc8, 46209, None)
+25/08/13 12:53:35 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 90bb70252fc8, 46209, None)
+25/08/13 12:53:35 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 90bb70252fc8, 46209, None)
+25/08/13 12:53:35 INFO SharedState: Setting hive.metastore.warehouse.dir ('null') to the value of spark.sql.warehouse.dir.
+25/08/13 12:53:35 INFO SharedState: Warehouse path is 'file:/opt/airflow/spark-warehouse'.
+25/08/13 12:53:37 INFO SparkContext: SparkContext is stopping with exitCode 0.
+25/08/13 12:53:37 INFO SparkUI: Stopped Spark web UI at http://90bb70252fc8:4040
+25/08/13 12:53:37 INFO MapOutputTrackerMasterEndpoint: MapOutputTrackerMasterEndpoint stopped!
+25/08/13 12:53:37 INFO MemoryStore: MemoryStore cleared
+25/08/13 12:53:37 INFO BlockManager: BlockManager stopped
+25/08/13 12:53:37 INFO BlockManagerMaster: BlockManagerMaster stopped
+25/08/13 12:53:37 INFO OutputCommitCoordinator$OutputCommitCoordinatorEndpoint: OutputCommitCoordinator stopped!
+25/08/13 12:53:37 INFO SparkContext: Successfully stopped SparkContext
+Traceback (most recent call last):
+  File "/opt/infra/pyspark_jobs/main.py", line 7, in <module>
+    process_batches(spark)
+  File "/opt/infra/pyspark_jobs/batch_processor.py", line 56, in process_batches
+    min_date, max_date = get_date_range(spark)
+  File "/opt/infra/pyspark_jobs/batch_processor.py", line 39, in get_date_range
+    spark.read.format("jdbc")
+  File "/home/airflow/.local/lib/python3.8/site-packages/pyspark/sql/readwriter.py", line 314, in load
+    return self._df(self._jreader.load())
+  File "/home/airflow/.local/lib/python3.8/site-packages/py4j/java_gateway.py", line 1322, in __call__
+    return_value = get_return_value(
+  File "/home/airflow/.local/lib/python3.8/site-packages/pyspark/errors/exceptions/captured.py", line 179, in deco
+    return f(*a, **kw)
+  File "/home/airflow/.local/lib/python3.8/site-packages/py4j/protocol.py", line 326, in get_return_value
+    raise Py4JJavaError(
+py4j.protocol.Py4JJavaError: An error occurred while calling o34.load.
+: java.lang.NullPointerException
+	at java.base/java.util.concurrent.ConcurrentHashMap.putVal(ConcurrentHashMap.java:1011)
+	at java.base/java.util.concurrent.ConcurrentHashMap.put(ConcurrentHashMap.java:1006)
+	at java.base/java.util.Properties.put(Properties.java:1304)
+	at java.base/java.util.Properties.setProperty(Properties.java:232)
+	at org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions.$anonfun$asProperties$1(JDBCOptions.scala:54)
+	at scala.collection.immutable.HashMap$HashMap1.foreach(HashMap.scala:400)
+	at scala.collection.immutable.HashMap$HashTrieMap.foreach(HashMap.scala:728)
+	at org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions.<init>(JDBCOptions.scala:54)
+	at org.apache.spark.sql.execution.datasources.jdbc.JDBCOptions.<init>(JDBCOptions.scala:41)
+	at org.apache.spark.sql.execution.datasources.jdbc.JdbcRelationProvider.createRelation(JdbcRelationProvider.scala:34)
+	at org.apache.spark.sql.execution.datasources.DataSource.resolveRelation(DataSource.scala:346)
+	at org.apache.spark.sql.DataFrameReader.loadV1Source(DataFrameReader.scala:229)
+	at org.apache.spark.sql.DataFrameReader.$anonfun$load$2(DataFrameReader.scala:211)
+	at scala.Option.getOrElse(Option.scala:189)
+	at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:211)
+	at org.apache.spark.sql.DataFrameReader.load(DataFrameReader.scala:172)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:569)
+	at py4j.reflection.MethodInvoker.invoke(MethodInvoker.java:244)
+	at py4j.reflection.ReflectionEngine.invoke(ReflectionEngine.java:374)
+	at py4j.Gateway.invoke(Gateway.java:282)
+	at py4j.commands.AbstractCommand.invokeMethod(AbstractCommand.java:132)
+	at py4j.commands.CallCommand.execute(CallCommand.java:79)
+	at py4j.ClientServerConnection.waitForCommands(ClientServerConnection.java:182)
+	at py4j.ClientServerConnection.run(ClientServerConnection.java:106)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+
+25/08/13 12:53:37 INFO ShutdownHookManager: Shutdown hook called
+25/08/13 12:53:37 INFO ShutdownHookManager: Deleting directory /tmp/spark-c9f58fbd-5aea-4c7e-a89e-cddac5c60db8
+25/08/13 12:53:37 INFO ShutdownHookManager: Deleting directory /tmp/spark-54054ef7-e874-4352-8297-af5bf024f26d
+25/08/13 12:53:37 INFO ShutdownHookManager: Deleting directory /tmp/spark-c9f58fbd-5aea-4c7e-a89e-cddac5c60db8/pyspark-101c767d-57de-45fc-ac10-74ccde720a53
+[2025-08-13T12:53:38.099+0000] {taskinstance.py:2699} ERROR - Task failed with exception
+Traceback (most recent call last):
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/models/taskinstance.py", line 433, in _execute_task
+    result = execute_callable(context=context, **execute_callable_kwargs)
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 199, in execute
+    return_value = self.execute_callable()
+  File "/home/airflow/.local/lib/python3.8/site-packages/airflow/operators/python.py", line 216, in execute_callable
+    return self.python_callable(*self.op_args, **self.op_kwargs)
+  File "/opt/airflow/dags/weather_batch_dag.py", line 22, in run_weather_main
+    raise RuntimeError(f"Script failed with exit code {result.returncode}")
+RuntimeError: Script failed with exit code 1
+[2025-08-13T12:53:38.131+0000] {taskinstance.py:1138} INFO - Marking task as UP_FOR_RETRY. dag_id=weather_main_script_runner, task_id=run_main_py, execution_date=20250813T125325, start_date=20250813T125327, end_date=20250813T125338
+[2025-08-13T12:53:38.183+0000] {standard_task_runner.py:107} ERROR - Failed to execute job 26 for task run_main_py (Script failed with exit code 1; 512)
+[2025-08-13T12:53:38.210+0000] {local_task_job_runner.py:234} INFO - Task exited with return code 1
+[2025-08-13T12:53:38.272+0000] {taskinstance.py:3281} INFO - 0 downstream tasks scheduled from follow-on schedule check

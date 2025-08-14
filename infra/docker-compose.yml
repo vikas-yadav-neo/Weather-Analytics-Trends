@@ -1,0 +1,192 @@
+services:
+
+  mysql_weather:
+    image: mysql:8.0
+    container_name: mysql_weather
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${FILESS_MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${FILESS_MYSQL_DATABASE}
+      MYSQL_USER: ${FILESS_MYSQL_USER}          # used
+      MYSQL_PASSWORD: ${FILESS_MYSQL_PASSWORD}       # used
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql_init:/docker-entrypoint-initdb.d
+    ports:
+      - "${FILESS_MYSQL_PORT}:3306"
+    networks:
+      - weather_network
+
+  postgres_weather:
+    image: postgres:15
+    container_name: postgres_weather
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres_init:/docker-entrypoint-initdb.d
+    ports:
+      - "5433:5432"
+    networks:
+      - weather_network
+
+  weather_superset:
+    image: apache/superset:latest
+    container_name: weather_superset
+    depends_on:
+      - postgres_weather
+    ports:
+      - "8088:8088"
+    environment:
+      SUPERSET_SECRET_KEY: "my_very_strong_secret_key_for_superset"
+    command: >
+      /bin/bash -c "
+      pip install psycopg2-binary &&
+      superset db upgrade &&
+      superset fab create-admin --username admin --firstname Superset --lastname Admin --email admin@superset.com --password admin &&
+      superset init &&
+      superset run -h 0.0.0.0 -p 8088"
+    volumes:
+      - superset_data:/app/superset_home
+    networks:
+      - weather_network
+
+  weather-spark-master:
+    image: bitnami/spark:3.5
+    container_name: weather-spark-master
+    environment:
+      - SPARK_MODE=master
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    ports:
+      - '8080:8080'
+      - '7077:7077'
+    volumes:
+      - ./infra/pyspark_apps:/opt/infra/pyspark_apps
+      - ./data_lake:/opt/data_lake
+      - /home/neosoft/Desktop/wheather_analytics_trends/infra/pyspark_apps/jars:/opt/jars
+    networks:
+      - weather_network
+
+  weather-spark-worker:
+    image: bitnami/spark:3.5
+    container_name: weather-spark-worker
+    depends_on:
+      - weather-spark-master
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://weather-spark-master:7077
+      - SPARK_WORKER_MEMORY=1G
+      - SPARK_WORKER_CORES=1
+      - SPARK_RPC_AUTHENTICATION_ENABLED=no
+      - SPARK_RPC_ENCRYPTION_ENABLED=no
+      - SPARK_LOCAL_STORAGE_ENCRYPTION_ENABLED=no
+      - SPARK_SSL_ENABLED=no
+    volumes:
+      - ./infra/pyspark_apps:/opt/infra/pyspark_apps
+      - ./data_lake:/opt/data_lake
+      - /home/neosoft/Desktop/wheather_analytics_trends/infra/pyspark_apps/jars:/opt/jars
+    networks:
+      - weather_network
+
+  weather-airflow-init:
+    image: apache/airflow:2.8.0
+    container_name: weather-airflow-init
+    depends_on:
+      - postgres_weather
+    environment:
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://weather_user:weather_password@postgres_weather:5432/weather_analytics
+      - _AIRFLOW_WWW_USER_USERNAME=admin
+      - _AIRFLOW_WWW_USER_PASSWORD=admin
+    volumes:
+      - ../airflow_dags:/opt/airflow/dags
+      - ./airflow_logs:/opt/airflow/logs
+      - ./airflow_plugins:/opt/airflow/plugins
+      - ./infra/pyspark_apps:/opt/infra/pyspark_apps
+      - /home/neosoft/Desktop/wheather_analytics_trends/infra/pyspark_apps/jars:/opt/jars
+      - ./data_lake:/opt/data_lake
+      - /home/neosoft/Desktop/wheather_analytics_trends/pyspark_jobs:/opt/infra/pyspark_jobs
+
+    command: >
+      bash -c "
+        pip install requests pandas pyspark pyarrow fastparquet sqlalchemy psycopg2-binary python-dotenv &&
+        airflow db init &&
+        airflow users create --username admin --password admin --firstname Air --lastname Flow --role Admin --email admin@example.com
+      "
+    networks:
+      - weather_network
+
+  airflow-webserver:
+    image: apache/airflow:2.8.0
+    restart: unless-stopped
+    depends_on:
+      - weather-airflow-init
+      - postgres_weather
+      - weather-spark-master
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://weather_user:weather_password@postgres_weather:5432/weather_analytics
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    volumes:
+      - ../airflow_dags:/opt/airflow/dags
+      - ./airflow_logs:/opt/airflow/logs
+      - ./airflow_plugins:/opt/airflow/plugins
+      - ./infra/pyspark_apps:/opt/infra/pyspark_apps
+      - /home/neosoft/Desktop/wheather_analytics_trends/infra/pyspark_apps/jars:/opt/jars
+      - ./data_lake:/opt/data_lake
+      - /home/neosoft/Desktop/wheather_analytics_trends/pyspark_jobs:/opt/infra/pyspark_jobs
+    ports:
+      - "8081:8080"
+    command: >
+      bash -c "
+        pip install requests pandas pyspark pyarrow fastparquet sqlalchemy psycopg2-binary python-dotenv &&
+        airflow webserver
+      "
+    networks:
+      - weather_network
+
+  airflow-scheduler:
+    image: apache/airflow:2.8.0
+    restart: unless-stopped
+    depends_on:
+      - weather-airflow-init
+      - postgres_weather
+      - weather-spark-master
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=LocalExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://weather_user:weather_password@postgres_weather:5432/weather_analytics
+      - AIRFLOW__CORE__LOAD_EXAMPLES=False
+    volumes:
+      - ../airflow_dags:/opt/airflow/dags
+      - ./airflow_logs:/opt/airflow/logs
+      - ./airflow_plugins:/opt/airflow/plugins
+      - ./infra/pyspark_apps:/opt/infra/pyspark_apps
+      - /home/neosoft/Desktop/wheather_analytics_trends/infra/pyspark_apps/jars:/opt/jars
+      - ./data_lake:/opt/data_lake
+      - /home/neosoft/Desktop/wheather_analytics_trends/pyspark_jobs:/opt/infra/pyspark_jobs
+    command: >
+      bash -c "
+        pip install requests pandas pyspark pyarrow fastparquet sqlalchemy psycopg2-binary python-dotenv &&
+        airflow scheduler
+      "
+    networks:
+      - weather_network
+
+volumes:
+  postgres_data:
+  superset_data:
+  mysql_data:
+
+networks:
+  weather_network:
+    driver: bridge
+
